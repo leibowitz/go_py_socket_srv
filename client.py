@@ -1,11 +1,18 @@
 import socket
 import sys
+import tempfile
+import os
 
 # Create a UDS socket
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 
+filepath = os.path.join(tempfile.gettempdir(), "socket", "sock_srv")
+if not os.path.exists(filepath):
+    print "Socket does not exist", filepath
+    sys.exit(1)
+
 # Connect the socket to the port where the server is listening
-server_address = './sock_srv'
+server_address = filepath
 print >>sys.stderr, 'connecting to %s' % server_address
 try:
     sock.connect(server_address)
